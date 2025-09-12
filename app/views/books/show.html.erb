@@ -1,0 +1,11 @@
+<h1><%= @book.title %></h1>
+
+<p><strong>Autor:</strong> <%= @book.author %></p>
+<p><strong>Preço:</strong> R$ <%= @book.price %></p>
+
+<% if current_user.admin? %>
+  <%= link_to "Editar", edit_book_path(@book) %> |
+  <%= link_to "Excluir", @book, method: :delete, data: { confirm: "Tem certeza que deseja excluir este livro?" } %> |
+<% end %>
+
+<%= link_to "Voltar", dashboard_path %>

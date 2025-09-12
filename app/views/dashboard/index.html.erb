@@ -1,0 +1,53 @@
+<!-- Navbar da Dashboard -->
+<nav class="navbar navbar-dashboard">
+  <div class="nav-container">
+    <% if user_signed_in? %>
+      <%= form_with url: destroy_user_session_path, method: :delete do %>
+        <%= submit_tag "Sair", class: "btn-nav" %>
+      <% end %>
+    <% end %>
+  </div>
+</nav>
+
+<!-- Checkbox para abrir/fechar sidebar -->
+<input type="checkbox" id="sidebar-toggle">
+
+<!-- Botão para abrir/fechar sidebar -->
+<label for="sidebar-toggle" class="sidebar-label">&#9776; Menu</label>
+
+<!-- Sidebar lateral -->
+<div class="sidebar">
+  <ul>
+    <% if user_signed_in? %>
+      <% if current_user.admin? %>
+        <li><%= link_to "Dashboard", dashboard_path %></li>
+        <li><%= link_to "Novo Livro", new_book_path %></li>
+        <li><%= link_to "Gerenciar Livros", books_path %></li>
+        <li><%= link_to "Empréstimos", loans_path %></li>
+        <li><%= link_to "Editar Conta", edit_user_registration_path %></li>
+      <% else %>
+        <li><%= link_to "Dashboard", dashboard_path %></li>
+        <li><%= link_to "Meus Livros", my_books_books_path %></li>
+        <li><%= link_to "Meus Empréstimos", my_loans_loans_path %></li>
+        <li><%= link_to "Editar Conta", edit_user_registration_path %></li>
+      <% end %>
+    <% else %>
+      <li><%= link_to "Login", new_user_session_path %></li>
+    <% end %>
+  </ul>
+</div>
+
+<!-- Conteúdo principal que será empurrado -->
+<div class="main-content">
+  <div class="container-dashboard">
+    <% if user_signed_in? %>
+      <h1>Seja bem-vindo(a), <%= current_user.email %>!</h1>
+    <% else %>
+      <h1>Olá!</h1>
+      <p>Você precisa estar logado para acessar a dashboard.</p>
+      <div class="dashboard-actions">
+        <%= link_to 'Login', new_user_session_path, class: "btn-action" %>
+      </div>
+    <% end %>
+  </div>
+</div>

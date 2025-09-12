@@ -1,0 +1,23 @@
+<h1>Editar Livro</h1>
+
+<%= form_with model: @book, local: true do |f| %>
+  <div>
+    <%= f.label :title, "Título" %><br>
+    <%= f.text_field :title %>
+  </div>
+
+  <div>
+    <%= f.label :author, "Autor" %><br>
+    <%= f.text_field :author %>
+  </div>
+
+  <div>
+    <%= f.label :price, "Preço" %><br>
+    <%= f.number_field :price, step: 0.01 %>
+  </div>
+
+  <div>
+    <%= f.submit "Atualizar Livro", class: "btn" %>
+    <%= link_to "Voltar", dashboard_path, class: "btn" %>
+  </div>
+<% end %>

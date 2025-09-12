@@ -1,0 +1,31 @@
+<h1>Lista de Livros</h1>
+
+<table border="1" cellpadding="5" cellspacing="0">
+  <thead>
+    <tr>
+      <th>Título</th>
+      <th>Autor</th>
+      <th>Preço</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @books.each do |book| %>
+      <tr>
+        <td><%= book.title %></td>
+        <td><%= book.author %></td>
+        <td>R$ <%= book.price %></td>
+        <td>
+          <%= link_to "Editar", edit_book_path(book), class: "btn" %>
+
+         <%= button_to "Excluir", book_path(book), method: :delete, data: { confirm: "Tem certeza que deseja excluir este livro?" } %>
+
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<p>
+  <%= link_to "➕ Novo Livro", new_book_path, class: "btn" %> |
+  <%= link_to "Voltar", dashboard_path, class: "btn" %>
+</p> 

@@ -1,0 +1,32 @@
+<h1>Meus Empréstimos</h1>
+
+<% active_loans = @loans.reject(&:end_date) %> <!-- filtra apenas empréstimos ativos -->
+
+<% if active_loans.any? %>
+  <table border="1" cellpadding="5" cellspacing="0">
+    <thead>
+      <tr>
+        <th>Livro</th>
+        <th>Data de Início</th>
+        <th>Data de Devolução</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% active_loans.each do |loan| %>
+        <tr>
+          <td><%= loan.book.title %></td>
+          <td><%= loan.start_date ? loan.start_date.strftime("%d/%m/%Y") : "Não definido" %></td>
+          <td><%= loan.end_date ? loan.end_date.strftime("%d/%m/%Y") : "Não definido" %></td>
+          <td>
+            <%= button_to "Devolver", return_loan_loan_path(loan), method: :patch, form: { style: "display:inline" } %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>Você não possui empréstimos ativos.</p>
+<% end %>
+
+<p><%= link_to "Voltar", dashboard_path %></p>

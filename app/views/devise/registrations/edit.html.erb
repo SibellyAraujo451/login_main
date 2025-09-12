@@ -1,0 +1,84 @@
+<!-- Navbar da Dashboard -->
+<nav class="navbar navbar-dashboard">
+  <div class="nav-container">
+    <% if user_signed_in? %>
+      <div class="nav-buttons">
+        <%= link_to "Voltar", dashboard_path, class: "btn-nav" %>
+
+        <%= button_to "Cancelar Conta", registration_path(resource_name),
+              method: :delete,
+              data: { confirm: "Tem certeza que deseja cancelar sua conta?" },
+              class: "btn-nav btn-cancel" %>
+      </div>
+    <% end %>
+  </div>
+</nav>
+
+<!-- Checkbox para abrir/fechar sidebar -->
+<input type="checkbox" id="sidebar-toggle">
+
+<!-- Botão para abrir/fechar sidebar -->
+<label for="sidebar-toggle" class="sidebar-label">&#9776; Menu</label>
+
+<!-- Sidebar lateral -->
+<div class="sidebar">
+  <ul>
+    <li><%= link_to "Perfil", edit_user_registration_path %></li>
+  </ul>
+</div>
+
+<!-- Conteúdo principal -->
+<div class="main-content">
+  <div class="container-edit-user">
+    <div class="edit-card">
+      <h2>Editar Perfil</h2>
+
+      <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+
+        <% if resource.errors.any? %>
+          <div class="errors-messages">
+            <h3><%= pluralize(resource.errors.count, "erro") %> proibiu este usuário de ser salvo:</h3>
+            <ul>
+              <% resource.errors.full_messages.each do |msg| %>
+                <li><%= msg %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+
+        <div class="field">
+          <%= f.label :email %>
+          <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+        </div>
+
+        <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+          <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
+        <% end %>
+
+        <div class="field">
+          <%= f.label :password %> <i>(deixe em branco caso não queira alterar)</i>
+          <%= f.password_field :password, autocomplete: "new-password" %>
+          <% if @minimum_password_length %>
+            <br>
+            <em><%= @minimum_password_length %> caracteres mínimo</em>
+          <% end %>
+        </div>
+
+        <div class="field">
+          <%= f.label :password_confirmation %>
+          <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
+        </div>
+
+        <!-- NOVO CAMPO ADICIONADO -->
+        <div class="field">
+          <%= f.label :current_password, "Senha Atual" %> <i>(necessário para confirmar alterações)</i>
+          <%= f.password_field :current_password, autocomplete: "current-password" %>
+        </div>
+
+        <div class="actions">
+          <%= f.submit "Atualizar Perfil" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,23 @@
+<h1>Editar Empréstimo</h1>
+
+<%= form_with model: @loan, local: true do |f| %>
+  <div>
+    <%= f.label :book_id, "Livro" %><br>
+    <%= f.collection_select :book_id, Book.all, :id, :title %>
+  </div>
+
+  <div>
+    <%= f.label :user_id, "Usuário" %><br>
+    <%= f.collection_select :user_id, User.all, :id, :email %>
+  </div>
+
+  <div>
+    <%= f.label :due_date, "Data de Vencimento" %><br>
+    <%= f.date_field :due_date %>
+  </div>
+
+  <div>
+    <%= f.submit "Atualizar Empréstimo" %>
+    <%= link_to "Voltar", loans_path %>
+  </div>
+<% end %>

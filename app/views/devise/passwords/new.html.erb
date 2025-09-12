@@ -1,0 +1,42 @@
+<!-- Navbar -->
+<nav class="navbar">
+  <div class="nav-container">
+    <%= link_to "Login", new_user_session_path, class: "btn-nav" %>
+    <%= link_to "Cadastro", new_user_registration_path, class: "btn-nav" %>
+  </div>
+</nav>
+
+<!-- Container centralizado do forgot password -->
+<div class="container-login">
+  <div class="login-box">
+    <h2>Esqueceu sua senha?</h2>
+
+    <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
+      
+      <% if resource.errors.any? %>
+  <div class="errors">
+    <ul>
+      <% resource.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+
+      <div class="field">
+        <%= f.label :email %><br />
+        <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+      </div>
+
+      <div class="actions">
+        <%= f.submit "Envie-me instruções para redefinir a senha", class: "btn-login" %>
+      </div>
+    <% end %>
+
+    <!-- Botão Voltar Home -->
+    <div class="btn-back-home">
+      <%= link_to "← Voltar para o menu", root_path %>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,51 @@
+<nav class="navbar">
+  <div class="nav-container">
+    <%= link_to "Login", new_user_session_path, class: "btn-nav" %>
+    <%= link_to "Cadastro", new_user_registration_path, class: "btn-nav" %>
+  </div>
+</nav>
+
+
+<!-- Container centralizado do cadastro -->
+<div class="form-container">
+  <div class="form-box">
+    <h2>Cadastro</h2>
+
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+      <% if resource.errors.any? %>
+        <div class="error-messages">
+          <h4><%= pluralize(resource.errors.count, "erro") %> proibiu este usuário de ser salvo:</h4>
+          <ul>
+            <% resource.errors.full_messages.each do |msg| %>
+              <li><%= msg %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <div class="input-group">
+        <%= f.label :email %>
+        <%= f.email_field :email, autofocus: true, class: "input-field" %>
+      </div>
+
+      <div class="input-group">
+        <%= f.label :password %>
+        <%= f.password_field :password, autocomplete: "new-password", class: "input-field" %>
+      </div>
+
+      <div class="input-group">
+        <%= f.label :password_confirmation %>
+        <%= f.password_field :password_confirmation, class: "input-field" %>
+      </div>
+
+      <div class="submit-group">
+        <%= f.submit "Cadastrar", class: "btn" %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<!-- Botão Voltar Home -->
+<div class="btn-back-home">
+  <a href="<%= root_path %>">← Voltar para início</a>
+</div>
