@@ -5,7 +5,7 @@ class LoansController < ApplicationController
   # LISTA DE EMPRÉSTIMOS – admin
   def index
     if current_user.admin?
-      # Busca todos os empréstimos, com usuário e livro
+      # Admin vê todos os empréstimos
       @loans = Loan.includes(:user, :book).all
     else
       redirect_to dashboard_path, alert: "Acesso negado."
@@ -14,35 +14,39 @@ class LoansController < ApplicationController
 
   # EMPRÉSTIMOS DO USUÁRIO LOGADO (ativos)
   def my_loans
-    # Apenas os empréstimos que ainda não foram devolvidos (end_date nulo)
+    # Apenas os empréstimos ativos do usuário
     @loans = current_user.loans.includes(:book).where(end_date: nil)
   end
 
   # MOSTRAR UM EMPRÉSTIMO
   def show
-    # @loan já é carregado pelo set_loan
     unless current_user.admin? || @loan.user == current_user
       redirect_to dashboard_path, alert: "Acesso negado."
     end
   end
 
-  # NOVO EMPRÉSTIMO (para admin criar manualmente)
+  # NOVO EMPRÉSTIMO (apenas admin)
   def new
     redirect_to dashboard_path, alert: "Acesso negado." unless current_user.admin?
     @loan = Loan.new
   end
 
   # CRIAR EMPRÉSTIMO
-  def create
-    @loan = Loan.new(loan_params)
-    if @loan.save
-      redirect_to current_user.admin? ? loans_path : my_loans_loans_path, notice: "Empréstimo criado!"
-    else
-      render :new
-    end
-  end
+ def create
+  @loan = Loan.new(loan_params)
+  @loan.start_date = Date.today
+  @loan.due_date = Date.today + 7.days   # prazo de 7 dias
 
-  # EDITAR EMPRÉSTIMO
+  if @loan.save
+    redirect_to current_user.admin? ? loans_path : my_loans_loans_path,
+                notice: "Empréstimo criado com sucesso!"
+  else
+    render :new
+  end
+end
+
+
+  # EDITAR EMPRÉSTIMO (apenas admin)
   def edit
     redirect_to dashboard_path, alert: "Acesso negado." unless current_user.admin?
   end
@@ -56,7 +60,7 @@ class LoansController < ApplicationController
     end
   end
 
-  # DELETAR EMPRÉSTIMO
+  # EXCLUIR EMPRÉSTIMO
   def destroy
     if current_user.admin?
       @loan.destroy
@@ -66,13 +70,14 @@ class LoansController < ApplicationController
     end
   end
 
-  # DEVOLVER UM LIVRO (usuário)
+  # DEVOLVER LIVRO (usuário ou admin)
   def return_loan
-    if @loan.user == current_user && @loan.end_date.nil?
+    if (current_user.admin? || @loan.user == current_user) && @loan.end_date.nil?
       @loan.update(end_date: Date.today)
-      redirect_to my_loans_loans_path, notice: "Livro devolvido com sucesso!"
+      redirect_to current_user.admin? ? loans_path : my_loans_loans_path,
+                  notice: "Livro devolvido com sucesso!"
     else
-      redirect_to my_loans_loans_path, alert: "Acesso negado ou empréstimo já devolvido."
+      redirect_to dashboard_path, alert: "Acesso negado ou empréstimo já devolvido."
     end
   end
 
@@ -83,6 +88,7 @@ class LoansController < ApplicationController
   end
 
   def loan_params
-    params.require(:loan).permit(:book_id, :user_id, :start_date, :end_date)
-  end
+  params.require(:loan).permit(:book_id, :user_id, :start_date, :end_date, :due_date)
+end
+
 end

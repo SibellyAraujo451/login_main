@@ -45,7 +45,8 @@ class BooksController < ApplicationController
   def update
     if current_user.admin?
       if @book.update(book_params)
-        redirect_to @book, notice: "Livro atualizado!"
+        # Redireciona para lista de livros após atualizar
+        redirect_to books_path, notice: "Livro atualizado com sucesso!"
       else
         render :edit
       end
@@ -68,22 +69,20 @@ class BooksController < ApplicationController
     @books = Book.all  # todos os livros para poder alugar
   end
 
-def rent
-  @book = Book.find(params[:id])
-  @loan = Loan.new(
-    user: current_user,
-    book: @book,
-    start_date: Date.today,
-    end_date: nil # ainda não devolvido
-  )
-  if @loan.save
-    redirect_to my_loans_loans_path, notice: "Livro alugado com sucesso!"
-  else
-    redirect_to my_books_books_path, alert: "Não foi possível alugar o livro."
+  def rent
+    @book = Book.find(params[:id])
+    @loan = Loan.new(
+      user: current_user,
+      book: @book,
+      start_date: Date.today,
+      end_date: nil # ainda não devolvido
+    )
+    if @loan.save
+      redirect_to my_loans_loans_path, notice: "Livro alugado com sucesso!"
+    else
+      redirect_to my_books_books_path, alert: "Não foi possível alugar o livro."
+    end
   end
-end
-
-
 
   private
 

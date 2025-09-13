@@ -1,4 +1,7 @@
-<h1>Todos os Livros</h1>
+<div class="top-bar">
+  <span class="title">Meus Livros</span>
+  <%= link_to "Voltar", dashboard_path, class: "back-button" %>
+</div>
 
 <% if @books.any? %>
   <table border="1" cellpadding="5" cellspacing="0">
@@ -17,14 +20,10 @@
           <td><%= book.title %></td>
           <td><%= book.author %></td>
           <td><%= number_to_currency(book.price, unit: "R$", separator: ",", delimiter: ".") %></td>
-
-          <!-- Coluna Prazo -->
           <td>
             <%= form_with url: rent_book_path(book), method: :post, local: true do |f| %>
               <%= f.date_field :end_date, value: Date.today + 7.days %>
           </td>
-
-          <!-- Coluna Ações -->
           <td>
               <%= f.submit "Alugar" %>
             <% end %>
@@ -36,7 +35,3 @@
 <% else %>
   <p>Não há livros cadastrados no momento.</p>
 <% end %>
-
-<p>
-  <%= link_to "Voltar", dashboard_path %>
-</p>

@@ -1,23 +1,40 @@
-<h1>Editar Livro</h1>
+<!-- Barra superior -->
+<div class="top-bar">
+  <span>Editar Livro</span>
+  <%= link_to 'Voltar', dashboard_path, class: 'btn-back' %>
+</div>
 
-<%= form_with model: @book, local: true do |f| %>
-  <div>
-    <%= f.label :title, "Título" %><br>
-    <%= f.text_field :title %>
-  </div>
+<!-- Container do form -->
+<div class="container-edit-book">
+  <% if @book.errors.any? %>
+    <div class="error-messages">
+      <h3><%= pluralize(@book.errors.count, "erro") %> impediram o salvamento:</h3>
+      <ul>
+        <% @book.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
 
-  <div>
-    <%= f.label :author, "Autor" %><br>
-    <%= f.text_field :author %>
-  </div>
+  <%= form_with(model: @book, local: true) do |f| %>
+    <div>
+      <%= f.label :title, "Título" %>
+      <%= f.text_field :title %>
+    </div>
 
-  <div>
-    <%= f.label :price, "Preço" %><br>
-    <%= f.number_field :price, step: 0.01 %>
-  </div>
+    <div>
+      <%= f.label :author, "Autor" %>
+      <%= f.text_field :author %>
+    </div>
 
-  <div>
-    <%= f.submit "Atualizar Livro", class: "btn" %>
-    <%= link_to "Voltar", dashboard_path, class: "btn" %>
-  </div>
-<% end %>
+    <div>
+      <%= f.label :price, "Preço" %>
+      <%= f.number_field :price, step: 0.01 %>
+    </div>
+
+    <div style="margin-top: 15px;">
+      <%= f.submit "Atualizar Livro", class: "btn btn-primary" %>
+    </div>
+  <% end %>
+</div>

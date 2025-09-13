@@ -1,39 +1,46 @@
-<h1>Todos os Empréstimos</h1>
+<!-- Barra superior -->
+<div class="top-bar">
+  <span>Todos os Empréstimos</span>
+  <%= link_to 'Voltar', dashboard_path, class: 'btn-back' %>
+</div>
 
-<% if @loans.any? %>
-  <table border="1" cellpadding="5" cellspacing="0">
-    <thead>
-      <tr>
-        <th>Livro</th>
-        <th>Usuário</th>
-        <th>Data de Início</th>
-        <th>Data de Devolução</th>
-        <th>Status</th>
-        <th>Ações</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @loans.each do |loan| %>
+<!-- Container da tabela -->
+<div class="container-table">
+  <% if @loans.any? %>
+    <table class="books-table">
+      <thead>
         <tr>
-          <td><%= loan.book.title %></td>
-          <td><%= loan.user.email %></td>
-          <td><%= loan.start_date ? loan.start_date.strftime("%d/%m/%Y") : "Não definido" %></td>
-          <td><%= loan.end_date ? loan.end_date.strftime("%d/%m/%Y") : "Não definido" %></td>
-          <td><%= loan.end_date ? "Devolvido" : "Alugado" %></td>
-          <td>
-            <% unless loan.end_date %>
-              <%= button_to "Marcar como Devolvido", return_loan_path(loan), method: :patch, form: { style: "display:inline" } %>
-            <% end %>
-            <%# Manter opções de editar e excluir sempre visíveis para admin %>
-            <%= link_to "Editar", edit_loan_path(loan) %> |
-            <%= button_to "Excluir", loan_path(loan), method: :delete, form: { style: "display:inline" } %>
-          </td>
+          <th>Livro</th>
+          <th>Usuário</th>
+          <th>Data de Início</th>
+          <th>Data de Devolução</th>
+          <th>Status</th>
+          <th>Ações</th>
         </tr>
-      <% end %>
-    </tbody>
-  </table>
-<% else %>
-  <p>Nenhum empréstimo registrado.</p>
-<% end %>
-
-<p><%= link_to "Voltar", dashboard_path %></p>
+      </thead>
+      <tbody>
+        <% @loans.each do |loan| %>
+          <tr>
+            <td><%= loan.book.title %></td>
+            <td><%= loan.user.email %></td>
+            <td><%= loan.start_date ? loan.start_date.strftime("%d/%m/%Y") : "Não definido" %></td>
+            <td><%= loan.end_date ? loan.end_date.strftime("%d/%m/%Y") : "Não definido" %></td>
+            <td>
+              <% if loan.end_date.present? %>
+                <span style="color: green; font-weight: bold;">Devolvido</span>
+              <% else %>
+                <span style="color: red; font-weight: bold;">Alugado</span>
+              <% end %>
+            </td>
+            <td>
+              <%= link_to "Editar", edit_loan_path(loan), class: "btn-action" %>
+              <%= button_to "Excluir", loan_path(loan), method: :delete, form: { style: "display:inline" }, data: { confirm: "Tem certeza?" }, class: "btn-action delete" %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <p>Nenhum empréstimo registrado.</p>
+  <% end %>
+</div>

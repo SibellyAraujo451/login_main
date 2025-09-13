@@ -1,31 +1,37 @@
-<h1>Lista de Livros</h1>
+<!-- Barra superior -->
+<div class="top-bar">
+  <span>Meus Livros</span>
+  <%= link_to 'Voltar', dashboard_path, class: 'btn-back' %>
+</div>
 
-<table border="1" cellpadding="5" cellspacing="0">
-  <thead>
-    <tr>
-      <th>Título</th>
-      <th>Autor</th>
-      <th>Preço</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @books.each do |book| %>
+
+<% if @books.any? %>
+  <table class="books-table">
+    <thead>
       <tr>
-        <td><%= book.title %></td>
-        <td><%= book.author %></td>
-        <td>R$ <%= book.price %></td>
-        <td>
-          <%= link_to "Editar", edit_book_path(book), class: "btn" %>
-
-         <%= button_to "Excluir", book_path(book), method: :delete, data: { confirm: "Tem certeza que deseja excluir este livro?" } %>
-
-        </td>
+        <th>Título</th>
+        <th>Autor</th>
+        <th>Preço</th>
+        <th>Ações</th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      <% @books.each do |book| %>
+        <tr>
+          <td><%= book.title %></td>
+          <td><%= book.author %></td>
+          <td><%= number_to_currency(book.price) %></td>
+          <td>
+  <div class="btn-group">
+    <%= link_to 'Editar', edit_book_path(book), class: 'btn-action' %>
+    <%= button_to 'Deletar', book_path(book), method: :delete, data: { confirm: 'Tem certeza?' }, class: 'btn-action delete' %>
+  </div>
+</td>
 
-<p>
-  <%= link_to "➕ Novo Livro", new_book_path, class: "btn" %> |
-  <%= link_to "Voltar", dashboard_path, class: "btn" %>
-</p> 
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>Nenhum livro cadastrado.</p>
+<% end %>
