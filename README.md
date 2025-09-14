@@ -1,18 +1,44 @@
-# Login
+# 📚 Sistema de Gerenciamento de Livros
 
-## Descrição
-Este é um projeto de sistema de login e cadastro. Ele inclui autenticação de usuários, páginas públicas e privadas, e integração com **Devise**.
+Este é um sistema desenvolvido em **Ruby on Rails** com foco em autenticação e autorização.  
+O projeto utiliza as gems **Devise** (para login e cadastro de usuários) e **Pundit** (para controle de permissões), garantindo segurança e organização nas regras de acesso.
 
-## Funcionalidades
-- Cadastro de usuários
-- Login e logout
-- Páginas privadas para usuários logados
-- Recuperação de senha
-- Barra lateral de perfil (dashboard)
-- Validações de formulário
+---
 
-
-## Tecnologias utilizadas
+## 🚀 Tecnologias utilizadas
 - Ruby on Rails
 - Devise (autenticação)
-- Git & GitHub
+- Pundit (autorização por roles)
+- SQLite 
+
+---
+
+## 🔑 Funcionalidades
+
+### Autenticação (Devise)
+- Cadastro de usuários
+- Login e logout
+- Recuperação e edição de senha
+- Sessão persistente
+
+### Autorização (Pundit)
+- **Usuário comum**
+  - Visualizar livros disponíveis
+  - Consultar seus empréstimos
+  - Editar sua própria conta
+- **Administrador**
+  - Criar, editar e excluir livros
+  - Gerenciar todos os livros cadastrados
+  - Acompanhar empréstimos de todos os usuários
+  - Editar sua conta
+
+---
+
+## 🖥️ Interface
+
+- Menu lateral dinâmico de acordo com o tipo de usuário:
+  - **Usuário comum:** Meus Livros | Meus Empréstimos | Editar Conta
+  - **Administrador:** Novo Livro | Gerenciar Livros | Empréstimos | Editar Conta
+- Mensagem de boas-vindas exibindo o e-mail logado
+- Botão de sair no canto superior direito
+
